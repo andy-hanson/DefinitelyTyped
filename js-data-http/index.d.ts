@@ -5,7 +5,9 @@
 
 /// <reference types="js-data" />
 
-declare namespace JSData {
+import * as JSData from 'js-data';
+
+declare module 'js-data' {
 
     interface DSHttpAdapterOptions {
         serialize?: (resourceName:string, data:any)=>any;
@@ -15,6 +17,8 @@ declare namespace JSData {
         forceTrailingSlash?: boolean;
         log?: boolean | ((message?:any, ...optionalParams:any[])=> void);
         error?: boolean | ((message?:any, ...optionalParams:any[])=> void);
+        basePath?: string;
+        verbsUseBasePath?: string;
     }
 
     interface DSHttpAdapterPromiseResolveType {
@@ -28,6 +32,9 @@ declare namespace JSData {
 
         new(options?:DSHttpAdapterOptions):DSHttpAdapter;
 
+        defaults: DSHttpAdapterOptions;
+        http: any;
+
         // DSHttpAdapter uses axios so options are axios config objects.
         HTTP(options?:Object):JSDataPromise<DSHttpAdapterPromiseResolveType>;
         DEL(url:string, data?:Object, options?:Object):JSDataPromise<DSHttpAdapterPromiseResolveType>;
@@ -38,7 +45,5 @@ declare namespace JSData {
 }
 
 declare var DSHttpAdapter:JSData.DSHttpAdapter;
-
-declare module 'js-data-http' {
-    export = DSHttpAdapter;
-}
+export = DSHttpAdapter;
+export as namespace DSHttpAdapter;

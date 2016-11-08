@@ -5,6 +5,9 @@
 
 
 /// <reference types="easy-jsend" />
+/// <reference types="bunyan" />
+/// <reference types="express" />
+/// <reference types="node" />
 
 declare namespace Express {
     export interface Request {

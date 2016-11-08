@@ -3,11 +3,11 @@
 // Definitions by: Niko Kovačič <https://github.com/nkovacic>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped 
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-import * as angular from 'angularjs';
+import * as angular from 'angular';
 
-declare module 'angularjs' {
+declare module 'angular' {
 	export namespace ui.select {
 	    interface ISelectConfig {
 	        appendToBody: boolean;

@@ -4,9 +4,12 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /// <reference types="js-data" />
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-declare namespace JSData {
+import * as JSData from 'js-data';
+import * as ng from 'angular';
+
+declare module 'js-data' {
 
     interface DSProvider {
         defaults:DSConfiguration;

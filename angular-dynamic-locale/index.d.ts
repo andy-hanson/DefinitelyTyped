@@ -3,25 +3,24 @@
 // Definitions by: Stephen Lautier <https://github.com/stephenlautier>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-import * as angular from 'angularjs';
+import * as angular from 'angular';
 
-declare module 'angularjs' {
-	export namespace dynamicLocale {
+declare module 'angular' {
+    export namespace dynamicLocale {
 
-		interface tmhDynamicLocaleService {
-			set(locale: string): void;
-			get(): string;
-		}
+        interface tmhDynamicLocaleService {
+            set(locale: string): void;
+            get(): string;
+        }
 
-		interface tmhDynamicLocaleProvider extends angular.IServiceProvider {
-			localeLocationPattern(location: string): tmhDynamicLocaleProvider;
-			localeLocationPattern(): string;
-			useStorage(storageName: string): void;
-			useCookieStorage(): void;
-		}
-	}
+        interface tmhDynamicLocaleProvider extends angular.IServiceProvider {
+            localeLocationPattern(location: string): tmhDynamicLocaleProvider;
+            localeLocationPattern(): string;
+            storageKey(storageKey: string): void;
+            useStorage(storageName: string): void;
+            useCookieStorage(): void;
+        }
+    }
 }
-
-

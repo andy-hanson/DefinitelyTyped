@@ -26,7 +26,7 @@ ipcRenderer.send('asynchronous-message', 'ping');
 // remote
 // https://github.com/atom/electron/blob/master/docs/api/remote.md
 
-var BrowserWindow: typeof Electron.BrowserWindow = remote.require('browser-window');
+var BrowserWindow = remote.BrowserWindow;
 var win = new BrowserWindow({ width: 800, height: 600 });
 win.loadURL('https://github.com');
 
@@ -74,6 +74,9 @@ webFrame.insertText('text');
 webFrame.executeJavaScript('JSON.stringify({})', false, (result) => {
     console.log(result);
 });
+
+console.log(webFrame.getResourceUsage());
+webFrame.clearCache();
 
 // clipboard
 // https://github.com/atom/electron/blob/master/docs/api/clipboard.md
@@ -164,7 +167,7 @@ holder.ondrop = function (e) {
 // nativeImage
 // https://github.com/atom/electron/blob/master/docs/api/native-image.md
 
-var Tray: Electron.Tray = remote.require('Tray');
+var Tray = remote.Tray;
 var appIcon2 = new Tray('/Users/somebody/images/icon.png');
 var window2 = new BrowserWindow({ icon: '/Users/somebody/images/window.png' });
 var image = clipboard.readImage();
@@ -184,7 +187,7 @@ process.once('loaded', function() {
 // screen
 // https://github.com/atom/electron/blob/master/docs/api/screen.md
 
-var app: Electron.App = remote.require('app');
+var app = remote.app;
 
 var mainWindow: Electron.BrowserWindow = null;
 
@@ -232,7 +235,7 @@ webview.addEventListener('found-in-page', function(e) {
 	}
 });
 
-var rquestId = webview.findInPage("test");
+var requestId = webview.findInPage("test");
 
 webview.addEventListener('new-window', function(e) {
 	require('electron').shell.openExternal(e.url);
@@ -247,6 +250,7 @@ webview.addEventListener('ipc-message', function(event) {
 	console.log(event.channel); // Prints "pong"
 });
 webview.send('ping');
+webview.capturePage((image) => { console.log(image); });
 
 // In guest page.
 ipcRenderer.on('ping', function() {

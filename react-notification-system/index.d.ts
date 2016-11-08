@@ -5,6 +5,8 @@
 
 /// <reference types="react" />
 
+import * as React from "react";
+
 declare namespace NotificationSystem {
 
     export interface System extends React.Component<any, any> {
@@ -72,6 +74,7 @@ declare namespace NotificationSystem {
         noAnimation?: boolean;
         ref?: string;
         style?: Style | boolean;
+        allowHTML?: boolean;
     }
 }
 

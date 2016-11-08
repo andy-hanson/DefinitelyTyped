@@ -3,12 +3,14 @@
         "module": "commonjs",
         "target": "es6",
         "noImplicitAny": false,
-        "strictNullChecks": false,
+        "strictNullChecks": true,
         "baseUrl": "../",
-        "typesSearchPaths": [
+        "typeRoots": [
             "../"
         ],
-        "noEmit": true
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
     "files": [
         "index.d.ts",

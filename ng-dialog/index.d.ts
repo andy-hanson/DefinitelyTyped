@@ -3,9 +3,9 @@
 // Definitions by: Stephen Lautier <https://github.com/stephenlautier>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-import * as angular from 'angularjs';
+import * as angular from 'angular';
 
 export type IDialogService = angular.dialog.IDialogService;
 export type IDialogOpenResult = angular.dialog.IDialogOpenResult;
@@ -17,7 +17,7 @@ export type IDialogOptions = angular.dialog.IDialogOptions;
 export type IDialogOpenOptions = angular.dialog.IDialogOpenOptions;
 export type IDialogOpenConfirmOptions = angular.dialog.IDialogOpenConfirmOptions;
 
-declare module 'angularjs' {
+declare module 'angular' {
 	export namespace dialog {
 
 		interface IDialogService {
@@ -217,13 +217,18 @@ declare module 'angularjs' {
 			 */
 			ariaDescribedById?: string;
 
-			/**
-			 * Specifies the CSS selector for the element to be referenced by the aria-describedby attribute on the dialog element. Default value is null (unspecified)
-			 *
-			 * If specified, the first matching element is used.
-			 */
-			ariaDescribedBySelector?: string;
-		}
+		/**
+		 * Specifies the CSS selector for the element to be referenced by the aria-describedby attribute on the dialog element. Default value is null (unspecified)
+		 *
+		 * If specified, the first matching element is used.
+		 */
+		ariaDescribedBySelector?: string;
+
+		/**
+		 * Specifies the width of the dialog content element. Default value is null (unspecified)
+		 */
+		width?: string|number;
+	}
 
 		/**
 		 * Options which are provided to open a dialog.
@@ -232,6 +237,7 @@ declare module 'angularjs' {
 			template: string;
 			controller?: string| any[] | any;
 			controllerAs?: string;
+		bindToController?: boolean;
 
 			/**
 			 * Scope object that will be passed to dialog. If you use controller with separate $scope service this object will be passed to $scope.$parent param.

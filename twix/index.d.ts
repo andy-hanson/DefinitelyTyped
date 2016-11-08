@@ -3,7 +3,7 @@
 // Definitions by: j3ko <https://github.com/j3ko>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-import { Moment, Duration } from '../moment';
+import { Moment, Duration } from 'moment';
 
 export interface TwixFormatOptions {
     groupMeridiems?: boolean;
@@ -61,8 +61,8 @@ export interface Twix {
     overlaps(other: Twix): boolean;
     engulfs(other: Twix): boolean;
     equals(other: Twix): boolean;
-    union(other: Twix): string;
-    intersection(other: Twix): string;
+        union(other: Twix): Twix;
+        intersection(other: Twix): Twix;
 
     xor(other: Twix): Twix[];
     difference(other: Twix): Twix[];
@@ -87,7 +87,7 @@ export interface TwixStatic {
     formatTemplate?: (left: any, right: any) => any;
 }
 
-declare module "../moment" {
+declare module "moment" {
     interface Moment {
         twix(date: Date): Twix;
         twix(date: Date, allDay: boolean): Twix;
@@ -120,10 +120,8 @@ declare module "../moment" {
         twix(date: string, format: string, options: TwixParseAndFormatOptions): Twix;
     }
 
-    interface MomentStatic {
-        twix(start: Moment, end: Moment): Twix;
-        twixClass: TwixStatic;
-    }
+    function twix(start: Moment, end: Moment): Twix;
+    const twixClass: TwixStatic;
 
     interface Duration {
         afterMoment(date: string): string;

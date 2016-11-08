@@ -5,6 +5,7 @@
 
 /// <reference types="react"/>
 
+import * as React from "react";
 import DataGrid = ReactDataGrid.DataGrid;
 export = DataGrid;
 
@@ -295,9 +296,9 @@ declare namespace ReactDataGrid {
         showRefreshIcon: boolean;
 				iconSize: number;
 				iconProps: {
-  					style: React.SVGAttributes,
-  					overStyle: React.SVGAttributes,
-  					disabledStyle: React.SVGAttributes
+  					style: React.SVGAttributes<{}>,
+  					overStyle: React.SVGAttributes<{}>,
+  					disabledStyle: React.SVGAttributes<{}>
 				}
     }
 

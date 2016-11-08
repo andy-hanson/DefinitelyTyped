@@ -5,7 +5,7 @@
 
 /// <reference types="jquery"/>
 
-import * as moment from '../moment';
+import * as moment from 'moment';
 
 export as namespace EonasdanBootstrapDatetimepicker;
 

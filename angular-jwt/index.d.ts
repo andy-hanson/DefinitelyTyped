@@ -3,28 +3,39 @@
 // Definitions by: Reto Rezzonico <https://github.com/rerezz>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-declare namespace angular.jwt {
+import * as angular from 'angular';
 
-    interface JwtToken {
-        iss?: string;
-        sub?: string;
-        aud?: string;
-        exp?: number;
-        nbf?: number;
-        iat?: number;
-        jti?: string;
-        unique_name?: string;
-    }
+declare module 'angular' {
+    export namespace jwt {
 
-    interface IJwtHelper {
-        decodeToken(token: string): JwtToken;
-        getTokenExpirationDate(token: any): Date;
-        isTokenExpired(token: any, offsetSeconds?: number): boolean;
-    }
+        interface JwtToken {
+            iss?: string;
+            sub?: string;
+            aud?: string;
+            exp?: number;
+            nbf?: number;
+            iat?: number;
+            jti?: string;
+            unique_name?: string;
+        }
 
-    interface IJwtInterceptor {
-        tokenGetter(...params : any[]): string;
+        interface IJwtHelper {
+            decodeToken(token: string): JwtToken;
+            getTokenExpirationDate(token: any): Date;
+            isTokenExpired(token: any, offsetSeconds?: number): boolean;
+        }
+
+        interface IJwtInterceptor {
+            tokenGetter(...params: any[]): string;
+        }
+
+        interface IAuthManagerServiceProvider {
+            authenticate(): void;
+            unauthenticate(): void;
+            checkAuthOnRefresh(): void;
+            redirectWhenUnauthenticated(): void;
+        }
     }
 }

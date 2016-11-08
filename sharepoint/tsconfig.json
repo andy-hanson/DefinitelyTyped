@@ -5,13 +5,15 @@
         "noImplicitAny": false,
         "strictNullChecks": false,
         "baseUrl": "../",
-        "typesSearchPaths": [
+        "typeRoots": [
             "../"
         ],
-        "noEmit": true
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
     "files": [
         "index.d.ts",
-        "sharepoint-tests.ts"
+        "SharePoint-tests.ts"
     ]
 }

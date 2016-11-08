@@ -4,6 +4,7 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /// <reference types="react"/>
+
 declare namespace reactInputCalendar {
     export interface ReactInputCalendarProps {
         /**
@@ -48,7 +49,11 @@ declare namespace reactInputCalendar {
         /**
         * Set a function that will be triggered the when input field is blurred. It will return the event and the date in the props.computableFormat format.
         */
-        onBlur?: (event: React.SyntheticEvent, computableDate: string) => void;
+        onBlur?: (event: React.SyntheticEvent<ReactInputCalendar>, computableDate: string) => void;
+        /**
+        * Set a function that will be triggered when the input field is focused.
+        */
+        onFocus?: (event: React.SyntheticEvent<ReactInputCalendar>) => void;
         /**
         * Define state when date picker would close once the user has clicked on a date.
         */

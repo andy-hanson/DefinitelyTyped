@@ -3,7 +3,7 @@
 // Definitions by: Spencer Williams <https://github.com/spencerwi/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
 interface IonicStatic {
     /**
@@ -213,6 +213,7 @@ declare namespace ionic {
             currentStateName(): string;
 
             goBack(backCount?: number): void;
+            removeBackView(): void;
             clearHistory(): void;
             clearCache(): angular.IPromise<any>;
             nextViewOptions(options: IonicHistoryNextViewOptions): void;
@@ -358,6 +359,7 @@ declare namespace ionic {
                 transition(transition?: string): string;
                 maxCache(maxNumber?: number): number;
                 forwardCache(value?: boolean): boolean;
+                swipeBackEnabled(value?: boolean): boolean;
             };
             scrolling: {
                 jsScrolling(value?: boolean): boolean;

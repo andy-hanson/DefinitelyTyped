@@ -5,10 +5,13 @@
         "noImplicitAny": true,
         "strictNullChecks": false,
         "baseUrl": "../",
-        "typesSearchPaths": [
-            "../"
+        "typeRoots": [
+            "../",
+            "./node_modules"
         ],
-        "noEmit": true
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
     "files": [
         "index.d.ts",

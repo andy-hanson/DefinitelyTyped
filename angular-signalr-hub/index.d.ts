@@ -4,7 +4,12 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 /// <reference types="signalr" />
-/// <reference types="angularjs" />
+/// <reference types="angular" />
+
+declare module "angular-signalr-hub" {
+    let _: string;
+    export = _;
+}
 
 declare namespace ngSignalr {
     interface HubFactory {

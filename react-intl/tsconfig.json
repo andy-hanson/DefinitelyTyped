@@ -10,9 +10,11 @@
         "strictNullChecks": false,
         "baseUrl": "../",
         "jsx": "react",
-        "typesSearchPaths": [
+        "typeRoots": [
             "../"
         ],
-        "noEmit": true
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     }
 }

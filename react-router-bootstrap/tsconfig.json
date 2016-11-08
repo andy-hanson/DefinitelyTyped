@@ -6,10 +6,12 @@
         "strictNullChecks": false,
         "baseUrl": "../",
         "jsx": "preserve",
-        "typesSearchPaths": [
+        "typeRoots": [
             "../"
         ],
-        "noEmit": true
+        "types": [],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
     "files": [
         "index.d.ts",

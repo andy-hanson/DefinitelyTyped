@@ -5,9 +5,9 @@
 
 /// <reference types="angular-ui-router" />
 
-import * as angular from 'angularjs';
+import * as angular from 'angular';
 
-declare module 'angularjs' {
+declare module 'angular' {
     export namespace ui {
 
 
@@ -125,7 +125,7 @@ declare module 'angularjs' {
             /*
              * Note: named views are mandatory when using sticky states!
              */
-            views?: { [name:string]: angular.ui.IState };
+            views?: { [name: string]: angular.ui.IState };
         }
 
 
@@ -145,7 +145,9 @@ declare module 'angularjs' {
             registerStickyState(state: IStickyState): void;
         }
 
+        interface IStateProvider extends angular.IServiceProvider {
+            state(config: IStickyState): IStateProvider;
+            state(name: string, config: IStickyState): IStateProvider;
+        }
     }
 }
-
-

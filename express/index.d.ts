@@ -11,9 +11,9 @@
  =============================================== */
 
 /// <reference types="express-serve-static-core" />
+/// <reference types="serve-static" />
 
-
-import * as serveStatic from "../serve-static";
+import * as serveStatic from "serve-static";
 import * as core from "express-serve-static-core";
 
 /**
@@ -37,7 +37,7 @@ declare namespace e {
     interface Express extends core.Express { }
     interface Handler extends core.Handler { }
     interface IRoute extends core.IRoute { }
-    interface IRouter<T> extends core.IRouter<T> { }
+    interface IRouter<T> extends core.IRouter { }
     interface IRouterMatcher<T> extends core.IRouterMatcher<T> { }
     interface MediaType extends core.MediaType { }
     interface NextFunction extends core.NextFunction { }

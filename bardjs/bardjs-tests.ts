@@ -1,6 +1,8 @@
 /// <reference types="mocha" />
 /// <reference types="chai" />
-/// <reference types="angularjs" />
+
+import * as angular from 'angular';
+import 'angular-mocks';
 
 namespace bardTests {
     var expect = chai.expect,
@@ -16,9 +18,11 @@ namespace bardTests {
         }
     }
 
-    myService.$inject = ['$q'];
     function myService($q: angular.IQService) {
         return new MyService($q);
+    }
+    namespace myService {
+        export var $inject = ['$q'];
     }
 
     class MyController {

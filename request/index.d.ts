@@ -1,5 +1,5 @@
 // Type definitions for request
-// Project: https://github.com/mikeal/request
+// Project: https://github.com/request/request
 // Definitions by: Carlos Ballesteros Velasco <https://github.com/soywiz>, bonnici <https://github.com/bonnici>, Bart van der Schoor <https://github.com/Bartvds>, Joe Skeen <http://github.com/joeskeen>, Christopher Currens <https://github.com/ccurrens>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
@@ -10,9 +10,10 @@
 import stream = require('stream');
 import http = require('http');
 import https = require('https');
-import FormData = require('form-data');
 import url = require('url');
 import fs = require('fs');
+import FormData = require('form-data');
+import { Url } from 'url';
 
 declare namespace request {
     export interface RequestAPI<TRequest extends Request,
@@ -97,7 +98,7 @@ declare namespace request {
         followRedirect?: boolean | ((response: http.IncomingMessage) => boolean);
         followAllRedirects?: boolean;
         maxRedirects?: number;
-        encoding?: string;
+        encoding?: string | null;
         pool?: any;
         timeout?: number;
         proxy?: any;
@@ -108,16 +109,16 @@ declare namespace request {
         key?: Buffer;
         cert?: Buffer;
         passphrase?: string;
-        ca?: Buffer;
+        ca?: string | Buffer | string[] | Buffer[];
         har?: HttpArchiveRequest;
         useQuerystring?: boolean;
     }
 
     interface UriOptions {
-        uri: string;
+        uri: string | Url;
     }
     interface UrlOptions {
-        url: string;
+        url: string | Url;
     }
     export type RequiredUriUrl = UriOptions | UrlOptions;
 
@@ -173,7 +174,7 @@ declare namespace request {
         setHeader(name: string, value: string, clobber?: boolean): Request;
         setHeaders(headers: Headers): Request;
         qs(q: Object, clobber?: boolean): Request;
-        form(): FormData.FormData;
+        form(): FormData;
         form(form: any): Request;
         multipart(multipart: RequestPart[]): Request;
         json(val: any): Request;

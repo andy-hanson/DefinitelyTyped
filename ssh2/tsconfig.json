@@ -5,9 +5,10 @@
         "noImplicitAny": true,
         "strictNullChecks": false,
         "baseUrl": "../",
-        "typesSearchPaths": [
+        "typeRoots": [
             "../"
         ],
+        "types": [],
         "noEmit": true
     },
     "files": [

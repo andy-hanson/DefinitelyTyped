@@ -5,10 +5,9 @@
         "noImplicitAny": true,
         "strictNullChecks": false,
         "baseUrl": "../",
-        "typesSearchPaths": [
-            "../"
-        ],
-        "noEmit": true
+        "types": ["selenium-webdriver"],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true
     },
     "files": [
         "index.d.ts",

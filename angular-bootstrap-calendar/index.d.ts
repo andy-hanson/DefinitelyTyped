@@ -3,10 +3,11 @@
 // Definitions by: Egor Komarov <https://github.com/Odrin>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-import * as moment from '../moment';
+import * as moment from 'moment';
+import * as angular from 'angular';
 
-declare global {
-    namespace angular.bootstrap.calendar {
+declare module 'angular' {
+    export namespace bootstrap.calendar {
         interface IEvent {
             /**
              * The title of the event

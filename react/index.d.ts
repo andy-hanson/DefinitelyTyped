@@ -1,6 +1,6 @@
 // Type definitions for React v0.14
 // Project: http://facebook.github.io/react/
-// Definitions by: Asana <https://asana.com>, AssureSign <http://www.assuresign.com>, Microsoft <https://microsoft.com>
+// Definitions by: Asana <https://asana.com>, AssureSign <http://www.assuresign.com>, Microsoft <https://microsoft.com>, John Reilly <https://github.com/johnnyreilly/>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 export = React;
@@ -28,7 +28,7 @@ declare namespace React {
     interface ReactElement<P> {
         type: string | ComponentClass<P> | SFC<P>;
         props: P;
-        key?: Key;
+        key: Key | null;
     }
 
     interface SFCElement<P> extends ReactElement<P> {
@@ -43,15 +43,15 @@ declare namespace React {
 
     type ClassicElement<P> = CElement<P, ClassicComponent<P, ComponentState>>;
 
-    interface DOMElement<P extends DOMAttributes, T extends Element> extends ReactElement<P> {
+    interface DOMElement<P extends DOMAttributes<T>, T extends Element> extends ReactElement<P> {
         type: string;
         ref: Ref<T>;
     }
 
-    interface ReactHTMLElement<T extends HTMLElement> extends DOMElement<HTMLAttributes, T> {
+    interface ReactHTMLElement<T extends HTMLElement> extends DOMElement<HTMLAttributes<T>, T> {
     }
 
-    interface ReactSVGElement extends DOMElement<SVGAttributes, SVGElement> {
+    interface ReactSVGElement extends DOMElement<SVGAttributes<SVGElement>, SVGElement> {
     }
 
     //
@@ -73,14 +73,14 @@ declare namespace React {
     type CFactory<P, T extends Component<P, ComponentState>> = ComponentFactory<P, T>;
     type ClassicFactory<P> = CFactory<P, ClassicComponent<P, ComponentState>>;
 
-    interface DOMFactory<P extends DOMAttributes, T extends Element> {
-        (props?: P & ClassAttributes<T>, ...children: ReactNode[]): DOMElement<P, T>;
+    interface DOMFactory<P extends DOMAttributes<T>, T extends Element> {
+        (props?: P & ClassAttributes<T> | null, ...children: ReactNode[]): DOMElement<P, T>;
     }
 
-    interface HTMLFactory<T extends HTMLElement> extends DOMFactory<HTMLAttributes, T> {
+    interface HTMLFactory<T extends HTMLElement> extends DOMFactory<HTMLAttributes<T>, T> {
     }
 
-    interface SVGFactory extends DOMFactory<SVGAttributes, SVGElement> {
+    interface SVGFactory extends DOMFactory<SVGAttributes<SVGElement>, SVGElement> {
     }
 
     //
@@ -93,7 +93,7 @@ declare namespace React {
 
     // Should be Array<ReactNode> but type aliases cannot be recursive
     type ReactFragment = {} | Array<ReactChild | any[] | boolean>;
-    type ReactNode = ReactChild | ReactFragment | boolean;
+    type ReactNode = ReactChild | ReactFragment | boolean | null | undefined;
 
     //
     // Top Level API
@@ -101,7 +101,7 @@ declare namespace React {
 
     function createClass<P, S>(spec: ComponentSpec<P, S>): ClassicComponentClass<P>;
 
-    function createFactory<P extends DOMAttributes, T extends Element>(
+    function createFactory<P extends DOMAttributes<T>, T extends Element>(
         type: string): DOMFactory<P, T>;
     function createFactory<P>(type: SFC<P>): SFCFactory<P>;
     function createFactory<P>(
@@ -110,7 +110,7 @@ declare namespace React {
         type: ClassType<P, T, C>): CFactory<P, T>;
     function createFactory<P>(type: ComponentClass<P> | SFC<P>): Factory<P>;
 
-    function createElement<P extends DOMAttributes, T extends Element>(
+    function createElement<P extends DOMAttributes<T>, T extends Element>(
         type: string,
         props?: P & ClassAttributes<T>,
         ...children: ReactNode[]): DOMElement<P, T>;
@@ -131,7 +131,7 @@ declare namespace React {
         props?: P & Attributes,
         ...children: ReactNode[]): ReactElement<P>;
 
-    function cloneElement<P extends DOMAttributes, T extends Element>(
+    function cloneElement<P extends DOMAttributes<T>, T extends Element>(
         element: DOMElement<P, T>,
         props?: P & ClassAttributes<T>,
         ...children: ReactNode[]): DOMElement<P, T>;
@@ -153,6 +153,7 @@ declare namespace React {
     var DOM: ReactDOM;
     var PropTypes: ReactPropTypes;
     var Children: ReactChildren;
+    var version: string;
 
     //
     // Component API
@@ -162,11 +163,12 @@ declare namespace React {
 
     // Base component for plain JS classes
     class Component<P, S> implements ComponentLifecycle<P, S> {
+        constructor(...args: any[]);
         constructor(props?: P, context?: any);
         setState(f: (prevState: S, props: P) => S, callback?: () => any): void;
         setState(state: S, callback?: () => any): void;
         forceUpdate(callBack?: () => any): void;
-        render(): JSX.Element;
+        render(): JSX.Element | null;
 
         // React.Props<T> is now deprecated, which means that the `children`
         // property is not available on `P` by default, even though you can
@@ -180,6 +182,8 @@ declare namespace React {
             [key: string]: ReactInstance
         };
     }
+
+    class PureComponent<P, S> extends Component<P, S> {}
 
     interface ClassicComponent<P, S> extends Component<P, S> {
         replaceState(nextState: S, callback?: () => any): void;
@@ -197,7 +201,7 @@ declare namespace React {
 
     type SFC<P> = StatelessComponent<P>;
     interface StatelessComponent<P> {
-        (props?: P, context?: any): ReactElement<any>;
+        (props: P, context?: any): ReactElement<any>;
         propTypes?: ValidationMap<P>;
         contextTypes?: ValidationMap<any>;
         defaultProps?: P;
@@ -258,7 +262,7 @@ declare namespace React {
     }
 
     interface ComponentSpec<P, S> extends Mixin<P, S> {
-        render(): ReactElement<any>;
+        render(): ReactElement<any> | null;
 
         [propertyName: string]: any;
     }
@@ -267,41 +271,44 @@ declare namespace React {
     // Event System
     // ----------------------------------------------------------------------
 
-    interface SyntheticEvent {
+    interface SyntheticEvent<T> {
         bubbles: boolean;
+        currentTarget: EventTarget & T;
         cancelable: boolean;
-        currentTarget: EventTarget;
         defaultPrevented: boolean;
         eventPhase: number;
         isTrusted: boolean;
         nativeEvent: Event;
         preventDefault(): void;
+        isDefaultPrevented(): boolean;
         stopPropagation(): void;
+        isPropagationStopped(): boolean;
+        persist(): void;
         target: EventTarget;
         timeStamp: Date;
         type: string;
     }
 
-    interface ClipboardEvent extends SyntheticEvent {
+    interface ClipboardEvent<T> extends SyntheticEvent<T> {
         clipboardData: DataTransfer;
     }
 
-    interface CompositionEvent extends SyntheticEvent {
+    interface CompositionEvent<T> extends SyntheticEvent<T> {
         data: string;
     }
 
-    interface DragEvent extends SyntheticEvent {
+    interface DragEvent<T> extends MouseEvent<T> {
         dataTransfer: DataTransfer;
     }
 
-    interface FocusEvent extends SyntheticEvent {
+    interface FocusEvent<T> extends SyntheticEvent<T> {
         relatedTarget: EventTarget;
     }
 
-    interface FormEvent extends SyntheticEvent {
+    interface FormEvent<T> extends SyntheticEvent<T> {
     }
 
-    interface KeyboardEvent extends SyntheticEvent {
+    interface KeyboardEvent<T> extends SyntheticEvent<T> {
         altKey: boolean;
         charCode: number;
         ctrlKey: boolean;
@@ -316,7 +323,7 @@ declare namespace React {
         which: number;
     }
 
-    interface MouseEvent extends SyntheticEvent {
+    interface MouseEvent<T> extends SyntheticEvent<T> {
         altKey: boolean;
         button: number;
         buttons: number;
@@ -333,7 +340,7 @@ declare namespace React {
         shiftKey: boolean;
     }
 
-    interface TouchEvent extends SyntheticEvent {
+    interface TouchEvent<T> extends SyntheticEvent<T> {
         altKey: boolean;
         changedTouches: TouchList;
         ctrlKey: boolean;
@@ -344,38 +351,52 @@ declare namespace React {
         touches: TouchList;
     }
 
-    interface UIEvent extends SyntheticEvent {
+    interface UIEvent<T> extends SyntheticEvent<T> {
         detail: number;
         view: AbstractView;
     }
 
-    interface WheelEvent extends SyntheticEvent {
+    interface WheelEvent<T> extends MouseEvent<T> {
         deltaMode: number;
         deltaX: number;
         deltaY: number;
         deltaZ: number;
     }
 
+    interface AnimationEvent extends SyntheticEvent<{}> {
+        animationName: string;
+        pseudoElement: string;
+        elapsedTime: number;
+    }
+
+    interface TransitionEvent extends SyntheticEvent<{}> {
+        propertyName: string;
+        pseudoElement: string;
+        elapsedTime: number;
+    }
+
     //
     // Event Handler Types
     // ----------------------------------------------------------------------
 
-    interface EventHandler<E extends SyntheticEvent> {
+    interface EventHandler<E extends SyntheticEvent<any>> {
         (event: E): void;
     }
 
-    type ReactEventHandler = EventHandler<SyntheticEvent>;
+    type ReactEventHandler<T> = EventHandler<SyntheticEvent<T>>;
 
-    type ClipboardEventHandler = EventHandler<ClipboardEvent>;
-    type CompositionEventHandler = EventHandler<CompositionEvent>;
-    type DragEventHandler = EventHandler<DragEvent>;
-    type FocusEventHandler = EventHandler<FocusEvent>;
-    type FormEventHandler = EventHandler<FormEvent>;
-    type KeyboardEventHandler = EventHandler<KeyboardEvent>;
-    type MouseEventHandler = EventHandler<MouseEvent>;
-    type TouchEventHandler = EventHandler<TouchEvent>;
-    type UIEventHandler = EventHandler<UIEvent>;
-    type WheelEventHandler = EventHandler<WheelEvent>;
+    type ClipboardEventHandler<T> = EventHandler<ClipboardEvent<T>>;
+    type CompositionEventHandler<T> = EventHandler<CompositionEvent<T>>;
+    type DragEventHandler<T> = EventHandler<DragEvent<T>>;
+    type FocusEventHandler<T> = EventHandler<FocusEvent<T>>;
+    type FormEventHandler<T> = EventHandler<FormEvent<T>>;
+    type KeyboardEventHandler<T> = EventHandler<KeyboardEvent<T>>;
+    type MouseEventHandler<T> = EventHandler<MouseEvent<T>>;
+    type TouchEventHandler<T> = EventHandler<TouchEvent<T>>;
+    type UIEventHandler<T> = EventHandler<UIEvent<T>>;
+    type WheelEventHandler<T> = EventHandler<WheelEvent<T>>;
+    type AnimationEventHandler = EventHandler<AnimationEvent>;
+    type TransitionEventHandler = EventHandler<TransitionEvent>;
 
     //
     // Props / DOM Attributes
@@ -401,104 +422,177 @@ declare namespace React {
         ref?: Ref<T>;
     }
 
-    interface HTMLProps<T> extends HTMLAttributes, ClassAttributes<T> {
+    interface HTMLProps<T> extends HTMLAttributes<T>, ClassAttributes<T> {
     }
 
-    interface SVGProps extends SVGAttributes, ClassAttributes<SVGElement> {
+    interface SVGProps extends SVGAttributes<SVGElement>, ClassAttributes<SVGElement> {
     }
 
-    interface DOMAttributes {
+    interface DOMAttributes<T> {
         children?: ReactNode;
         dangerouslySetInnerHTML?: {
             __html: string;
         };
 
         // Clipboard Events
-        onCopy?: ClipboardEventHandler;
-        onCut?: ClipboardEventHandler;
-        onPaste?: ClipboardEventHandler;
+        onCopy?: ClipboardEventHandler<T>;
+        onCopyCapture?: ClipboardEventHandler<T>;
+        onCut?: ClipboardEventHandler<T>;
+        onCutCapture?: ClipboardEventHandler<T>;
+        onPaste?: ClipboardEventHandler<T>;
+        onPasteCapture?: ClipboardEventHandler<T>;
 
         // Composition Events
-        onCompositionEnd?: CompositionEventHandler;
-        onCompositionStart?: CompositionEventHandler;
-        onCompositionUpdate?: CompositionEventHandler;
+        onCompositionEnd?: CompositionEventHandler<T>;
+        onCompositionEndCapture?: CompositionEventHandler<T>;
+        onCompositionStart?: CompositionEventHandler<T>;
+        onCompositionStartCapture?: CompositionEventHandler<T>;
+        onCompositionUpdate?: CompositionEventHandler<T>;
+        onCompositionUpdateCapture?: CompositionEventHandler<T>;
 
         // Focus Events
-        onFocus?: FocusEventHandler;
-        onBlur?: FocusEventHandler;
+        onFocus?: FocusEventHandler<T>;
+        onFocusCapture?: FocusEventHandler<T>;
+        onBlur?: FocusEventHandler<T>;
+        onBlurCapture?: FocusEventHandler<T>;
 
         // Form Events
-        onChange?: FormEventHandler;
-        onInput?: FormEventHandler;
-        onSubmit?: FormEventHandler;
+        onChange?: FormEventHandler<T>;
+        onChangeCapture?: FormEventHandler<T>;
+        onInput?: FormEventHandler<T>;
+        onInputCapture?: FormEventHandler<T>;
+        onSubmit?: FormEventHandler<T>;
+        onSubmitCapture?: FormEventHandler<T>;
 
         // Image Events
-        onLoad?: ReactEventHandler;
-        onError?: ReactEventHandler; // also a Media Event
+        onLoad?: ReactEventHandler<T>;
+        onLoadCapture?: ReactEventHandler<T>;
+        onError?: ReactEventHandler<T>; // also a Media Event
+        onErrorCapture?: ReactEventHandler<T>; // also a Media Event
 
         // Keyboard Events
-        onKeyDown?: KeyboardEventHandler;
-        onKeyPress?: KeyboardEventHandler;
-        onKeyUp?: KeyboardEventHandler;
+        onKeyDown?: KeyboardEventHandler<T>;
+        onKeyDownCapture?: KeyboardEventHandler<T>;
+        onKeyPress?: KeyboardEventHandler<T>;
+        onKeyPressCapture?: KeyboardEventHandler<T>;
+        onKeyUp?: KeyboardEventHandler<T>;
+        onKeyUpCapture?: KeyboardEventHandler<T>;
 
         // Media Events
-        onAbort?: ReactEventHandler;
-        onCanPlay?: ReactEventHandler;
-        onCanPlayThrough?: ReactEventHandler;
-        onDurationChange?: ReactEventHandler;
-        onEmptied?: ReactEventHandler;
-        onEncrypted?: ReactEventHandler;
-        onEnded?: ReactEventHandler;
-        onLoadedData?: ReactEventHandler;
-        onLoadedMetadata?: ReactEventHandler;
-        onLoadStart?: ReactEventHandler;
-        onPause?: ReactEventHandler;
-        onPlay?: ReactEventHandler;
-        onPlaying?: ReactEventHandler;
-        onProgress?: ReactEventHandler;
-        onRateChange?: ReactEventHandler;
-        onSeeked?: ReactEventHandler;
-        onSeeking?: ReactEventHandler;
-        onStalled?: ReactEventHandler;
-        onSuspend?: ReactEventHandler;
-        onTimeUpdate?: ReactEventHandler;
-        onVolumeChange?: ReactEventHandler;
-        onWaiting?: ReactEventHandler;
+        onAbort?: ReactEventHandler<T>;
+        onAbortCapture?: ReactEventHandler<T>;
+        onCanPlay?: ReactEventHandler<T>;
+        onCanPlayCapture?: ReactEventHandler<T>;
+        onCanPlayThrough?: ReactEventHandler<T>;
+        onCanPlayThroughCapture?: ReactEventHandler<T>;
+        onDurationChange?: ReactEventHandler<T>;
+        onDurationChangeCapture?: ReactEventHandler<T>;
+        onEmptied?: ReactEventHandler<T>;
+        onEmptiedCapture?: ReactEventHandler<T>;
+        onEncrypted?: ReactEventHandler<T>;
+        onEncryptedCapture?: ReactEventHandler<T>;
+        onEnded?: ReactEventHandler<T>;
+        onEndedCapture?: ReactEventHandler<T>;
+        onLoadedData?: ReactEventHandler<T>;
+        onLoadedDataCapture?: ReactEventHandler<T>;
+        onLoadedMetadata?: ReactEventHandler<T>;
+        onLoadedMetadataCapture?: ReactEventHandler<T>;
+        onLoadStart?: ReactEventHandler<T>;
+        onLoadStartCapture?: ReactEventHandler<T>;
+        onPause?: ReactEventHandler<T>;
+        onPauseCapture?: ReactEventHandler<T>;
+        onPlay?: ReactEventHandler<T>;
+        onPlayCapture?: ReactEventHandler<T>;
+        onPlaying?: ReactEventHandler<T>;
+        onPlayingCapture?: ReactEventHandler<T>;
+        onProgress?: ReactEventHandler<T>;
+        onProgressCapture?: ReactEventHandler<T>;
+        onRateChange?: ReactEventHandler<T>;
+        onRateChangeCapture?: ReactEventHandler<T>;
+        onSeeked?: ReactEventHandler<T>;
+        onSeekedCapture?: ReactEventHandler<T>;
+        onSeeking?: ReactEventHandler<T>;
+        onSeekingCapture?: ReactEventHandler<T>;
+        onStalled?: ReactEventHandler<T>;
+        onStalledCapture?: ReactEventHandler<T>;
+        onSuspend?: ReactEventHandler<T>;
+        onSuspendCapture?: ReactEventHandler<T>;
+        onTimeUpdate?: ReactEventHandler<T>;
+        onTimeUpdateCapture?: ReactEventHandler<T>;
+        onVolumeChange?: ReactEventHandler<T>;
+        onVolumeChangeCapture?: ReactEventHandler<T>;
+        onWaiting?: ReactEventHandler<T>;
+        onWaitingCapture?: ReactEventHandler<T>;
 
         // MouseEvents
-        onClick?: MouseEventHandler;
-        onContextMenu?: MouseEventHandler;
-        onDoubleClick?: MouseEventHandler;
-        onDrag?: DragEventHandler;
-        onDragEnd?: DragEventHandler;
-        onDragEnter?: DragEventHandler;
-        onDragExit?: DragEventHandler;
-        onDragLeave?: DragEventHandler;
-        onDragOver?: DragEventHandler;
-        onDragStart?: DragEventHandler;
-        onDrop?: DragEventHandler;
-        onMouseDown?: MouseEventHandler;
-        onMouseEnter?: MouseEventHandler;
-        onMouseLeave?: MouseEventHandler;
-        onMouseMove?: MouseEventHandler;
-        onMouseOut?: MouseEventHandler;
-        onMouseOver?: MouseEventHandler;
-        onMouseUp?: MouseEventHandler;
+        onClick?: MouseEventHandler<T>;
+        onClickCapture?: MouseEventHandler<T>;
+        onContextMenu?: MouseEventHandler<T>;
+        onContextMenuCapture?: MouseEventHandler<T>;
+        onDoubleClick?: MouseEventHandler<T>;
+        onDoubleClickCapture?: MouseEventHandler<T>;
+        onDrag?: DragEventHandler<T>;
+        onDragCapture?: DragEventHandler<T>;
+        onDragEnd?: DragEventHandler<T>;
+        onDragEndCapture?: DragEventHandler<T>;
+        onDragEnter?: DragEventHandler<T>;
+        onDragEnterCapture?: DragEventHandler<T>;
+        onDragExit?: DragEventHandler<T>;
+        onDragExitCapture?: DragEventHandler<T>;
+        onDragLeave?: DragEventHandler<T>;
+        onDragLeaveCapture?: DragEventHandler<T>;
+        onDragOver?: DragEventHandler<T>;
+        onDragOverCapture?: DragEventHandler<T>;
+        onDragStart?: DragEventHandler<T>;
+        onDragStartCapture?: DragEventHandler<T>;
+        onDrop?: DragEventHandler<T>;
+        onDropCapture?: DragEventHandler<T>;
+        onMouseDown?: MouseEventHandler<T>;
+        onMouseDownCapture?: MouseEventHandler<T>;
+        onMouseEnter?: MouseEventHandler<T>;
+        onMouseLeave?: MouseEventHandler<T>;
+        onMouseMove?: MouseEventHandler<T>;
+        onMouseMoveCapture?: MouseEventHandler<T>;
+        onMouseOut?: MouseEventHandler<T>;
+        onMouseOutCapture?: MouseEventHandler<T>;
+        onMouseOver?: MouseEventHandler<T>;
+        onMouseOverCapture?: MouseEventHandler<T>;
+        onMouseUp?: MouseEventHandler<T>;
+        onMouseUpCapture?: MouseEventHandler<T>;
 
         // Selection Events
-        onSelect?: ReactEventHandler;
+        onSelect?: ReactEventHandler<T>;
+        onSelectCapture?: ReactEventHandler<T>;
 
         // Touch Events
-        onTouchCancel?: TouchEventHandler;
-        onTouchEnd?: TouchEventHandler;
-        onTouchMove?: TouchEventHandler;
-        onTouchStart?: TouchEventHandler;
+        onTouchCancel?: TouchEventHandler<T>;
+        onTouchCancelCapture?: TouchEventHandler<T>;
+        onTouchEnd?: TouchEventHandler<T>;
+        onTouchEndCapture?: TouchEventHandler<T>;
+        onTouchMove?: TouchEventHandler<T>;
+        onTouchMoveCapture?: TouchEventHandler<T>;
+        onTouchStart?: TouchEventHandler<T>;
+        onTouchStartCapture?: TouchEventHandler<T>;
 
         // UI Events
-        onScroll?: UIEventHandler;
+        onScroll?: UIEventHandler<T>;
+        onScrollCapture?: UIEventHandler<T>;
 
         // Wheel Events
-        onWheel?: WheelEventHandler;
+        onWheel?: WheelEventHandler<T>;
+        onWheelCapture?: WheelEventHandler<T>;
+
+        // Animation Events
+        onAnimationStart?: AnimationEventHandler;
+        onAnimationStartCapture?: AnimationEventHandler;
+        onAnimationEnd?: AnimationEventHandler;
+        onAnimationEndCapture?: AnimationEventHandler;
+        onAnimationIteration?: AnimationEventHandler;
+        onAnimationIterationCapture?: AnimationEventHandler;
+
+        // Transition Events
+        onTransitionEnd?: TransitionEventHandler;
+        onTransitionEndCapture?: TransitionEventHandler;
     }
 
     // This interface is not complete. Only properties accepting
@@ -1155,6 +1249,12 @@ declare namespace React {
         hyphens?: any;
 
         imeMode?: any;
+
+        /**
+         * Defines how the browser distributes space between and around flex items
+         * along the main-axis of their container.
+         */
+        justifyContent?: "flex-start" | "flex-end" | "center" | "space-between" | "space-around";
 
         layoutGrid?: any;
 
@@ -1886,7 +1986,7 @@ declare namespace React {
         [propertyName: string]: any;
     }
 
-    interface HTMLAttributes extends DOMAttributes {
+    interface HTMLAttributes<T> extends DOMAttributes<T> {
         // React-specific Attributes
         defaultChecked?: boolean;
         defaultValue?: string | string[];
@@ -1943,7 +2043,6 @@ declare namespace React {
         hrefLang?: string;
         htmlFor?: string;
         httpEquiv?: string;
-        icon?: string;
         id?: string;
         inputMode?: string;
         integrity?: string;
@@ -2009,7 +2108,7 @@ declare namespace React {
         title?: string;
         type?: string;
         useMap?: string;
-        value?: string | string[];
+        value?: string | string[] | number;
         width?: number | string;
         wmode?: string;
         wrap?: string;
@@ -2037,13 +2136,11 @@ declare namespace React {
         results?: number;
         security?: string;
         unselectable?: boolean;
-
-        // Allows aria- and data- Attributes
-        [key: string]: any;
     }
 
-    interface SVGAttributes extends HTMLAttributes {
+    interface SVGAttributes<T> extends HTMLAttributes<T> {
         clipPath?: string;
+        colorInterpolationFilters?: "auto" | "sRGB" | "linearRGB" | "inherit";
         cx?: number | string;
         cy?: number | string;
         d?: string;
@@ -2051,15 +2148,19 @@ declare namespace React {
         dy?: number | string;
         fill?: string;
         fillOpacity?: number | string;
+        fillRule?: "nonzero" | "evenodd" | "inherit";
+        filter?: string;
         fontFamily?: string;
         fontSize?: number | string;
         fx?: number | string;
         fy?: number | string;
         gradientTransform?: string;
         gradientUnits?: string;
+        in?: string;
         markerEnd?: string;
         markerMid?: string;
         markerStart?: string;
+        mask?: string;
         offset?: number | string;
         opacity?: number | string;
         patternContentUnits?: string;
@@ -2067,19 +2168,24 @@ declare namespace React {
         points?: string;
         preserveAspectRatio?: string;
         r?: number | string;
+        result?: string;
         rx?: number | string;
         ry?: number | string;
         spreadMethod?: string;
+        stdDeviation?: number | string
         stopColor?: string;
         stopOpacity?: number | string;
         stroke?: string;
         strokeDasharray?: string;
-        strokeLinecap?: string;
+        strokeLinecap?: "butt" | "round" | "square" | "inherit";
+        strokeLinejoin?: "miter" | "round" | "bevel" | "inherit";
         strokeMiterlimit?: string;
         strokeOpacity?: number | string;
         strokeWidth?: number | string;
         textAnchor?: string;
         transform?: string;
+        type?: string;
+        values?: string;
         version?: string;
         viewBox?: string;
         x1?: number | string;
@@ -2248,7 +2354,7 @@ declare namespace React {
     // ----------------------------------------------------------------------
 
     interface Validator<T> {
-        (object: T, key: string, componentName: string): Error;
+        (object: T, key: string, componentName: string, ...rest: any[]): Error | null;
     }
 
     interface Requireable<T> extends Validator<T> {
@@ -2322,7 +2428,7 @@ declare global {
     namespace JSX {
         interface Element extends React.ReactElement<any> { }
         interface ElementClass extends React.Component<any, any> {
-            render(): JSX.Element;
+            render(): JSX.Element|null;
         }
         interface ElementAttributesProperty { props: {}; }
 
@@ -2451,12 +2557,41 @@ declare global {
             circle: React.SVGProps;
             clipPath: React.SVGProps;
             defs: React.SVGProps;
+        desc: React.SVGProps;
             ellipse: React.SVGProps;
+        feBlend: React.SVGProps;
+        feColorMatrix: React.SVGProps;
+        feComponentTransfer: React.SVGProps;
+        feComposite: React.SVGProps;
+        feConvolveMatrix: React.SVGProps;
+        feDiffuseLighting: React.SVGProps;
+        feDisplacementMap: React.SVGProps;
+        feDistantLight: React.SVGProps;
+        feFlood: React.SVGProps;
+        feFuncA: React.SVGProps;
+        feFuncB: React.SVGProps;
+        feFuncG: React.SVGProps;
+        feFuncR: React.SVGProps;
+        feGaussianBlur: React.SVGProps;
+        feImage: React.SVGProps;
+        feMerge: React.SVGProps;
+        feMergeNode: React.SVGProps;
+        feMorphology: React.SVGProps;
+        feOffset: React.SVGProps;
+        fePointLight: React.SVGProps;
+        feSpecularLighting: React.SVGProps;
+        feSpotLight: React.SVGProps;
+        feTile: React.SVGProps;
+        feTurbulence: React.SVGProps;
+        filter: React.SVGProps;
+        foreignObject: React.SVGProps;
             g: React.SVGProps;
             image: React.SVGProps;
             line: React.SVGProps;
             linearGradient: React.SVGProps;
+        marker: React.SVGProps;
             mask: React.SVGProps;
+        metadata: React.SVGProps;
             path: React.SVGProps;
             pattern: React.SVGProps;
             polygon: React.SVGProps;
@@ -2464,10 +2599,13 @@ declare global {
             radialGradient: React.SVGProps;
             rect: React.SVGProps;
             stop: React.SVGProps;
+        switch: React.SVGProps;
             symbol: React.SVGProps;
             text: React.SVGProps;
+        textPath: React.SVGProps;
             tspan: React.SVGProps;
             use: React.SVGProps;
+        view: React.SVGProps;
         }
     }
 }

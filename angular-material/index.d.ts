@@ -1,274 +1,413 @@
-// Type definitions for Angular Material 1.0.0-rc5+ (angular.material module)
+// Type definitions for Angular Material 1.1.0-rc5+ (angular.material module)
 // Project: https://github.com/angular/material
-// Definitions by: Matt Traynham <https://github.com/mtraynham>
+// Definitions by: Alex Staroselsky <https://github.com/AlStar01>, Blake Bigelow <https://github.com/blbigelow>, Peter Hajdu <https://github.com/PeterHajdu>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
-declare namespace angular.material {
+import * as angular from 'angular';
 
-    interface IBottomSheetOptions {
-        templateUrl?: string;
-        template?: string;
-        scope?: angular.IScope; // default: new child scope
-        preserveScope?: boolean; // default: false
-        controller?: string|Function;
-        locals?: {[index: string]: any};
-        targetEvent?: MouseEvent;
-        resolve?: {[index: string]: angular.IPromise<any>}
-        controllerAs?: string;
-        bindToController?: boolean;
-        parent?: string|Element|JQuery; // default: root node
-        disableParentScroll?: boolean; // default: true
-    }
+declare var _: string;
+export = _;
 
-    interface IBottomSheetService {
-        show(options: IBottomSheetOptions): angular.IPromise<any>;
-        hide(response?: any): void;
-        cancel(response?: any): void;
-    }
+declare module 'angular' {
+    export namespace material {
+        interface IBottomSheetOptions {
+            templateUrl?: string;
+            template?: string;
+            scope?: angular.IScope; // default: new child scope
+            preserveScope?: boolean; // default: false
+            controller?: string | Function;
+            locals?: { [index: string]: any };
+            clickOutsideToClose?: boolean;
+            disableBackdrop?: boolean;
+            escapeToClose?: boolean;
+            resolve?: { [index: string]: () => angular.IPromise<any> };
+            controllerAs?: string;
+            parent?: Function | string | Object; // default: root node
+            disableParentScroll?: boolean; // default: true
+        }
 
-    interface IPresetDialog<T> {
-        title(title: string): T;
-        textContent(textContent: string): T;
-        htmlContent(htmlContent: string): T;
-        ok(ok: string): T;
-        theme(theme: string): T;
-        templateUrl(templateUrl?: string): T;
-        template(template?: string): T;
-        targetEvent(targetEvent?: MouseEvent): T;
-        scope(scope?: angular.IScope): T; // default: new child scope
-        preserveScope(preserveScope?: boolean): T; // default: false
-        disableParentScroll(disableParentScroll?: boolean): T; // default: true
-        hasBackdrop(hasBackdrop?: boolean): T; // default: true
-        clickOutsideToClose(clickOutsideToClose?: boolean): T; // default: false
-        escapeToClose(escapeToClose?: boolean): T; // default: true
-        focusOnOpen(focusOnOpen?: boolean): T; // default: true
-        controller(controller?: string|Function): T;
-        locals(locals?: {[index: string]: any}): T;
-        bindToController(bindToController?: boolean): T; // default: false
-        resolve(resolve?: {[index: string]: angular.IPromise<any>}): T;
-        controllerAs(controllerAs?: string): T;
-        parent(parent?: string|Element|JQuery): T; // default: root node
-        onComplete(onComplete?: Function): T;
-        ariaLabel(ariaLabel: string): T;
-    }
+        interface IBottomSheetService {
+            show(options: IBottomSheetOptions): angular.IPromise<any>;
+            hide(response?: any): void;
+            cancel(response?: any): void;
+        }
 
-    interface IAlertDialog extends IPresetDialog<IAlertDialog> {
-    }
+        interface IPresetDialog<T> {
+            title(title: string): T;
+            textContent(textContent: string): T;
+            htmlContent(htmlContent: string): T;
+            ok(ok: string): T;
+            theme(theme: string): T;
+            templateUrl(templateUrl?: string): T;
+            template(template?: string): T;
+            targetEvent(targetEvent?: MouseEvent): T;
+            scope(scope?: angular.IScope): T; // default: new child scope
+            preserveScope(preserveScope?: boolean): T; // default: false
+            disableParentScroll(disableParentScroll?: boolean): T; // default: true
+            hasBackdrop(hasBackdrop?: boolean): T; // default: true
+            clickOutsideToClose(clickOutsideToClose?: boolean): T; // default: false
+            escapeToClose(escapeToClose?: boolean): T; // default: true
+            focusOnOpen(focusOnOpen?: boolean): T; // default: true
+            controller(controller?: string | Function): T;
+            locals(locals?: { [index: string]: any }): T;
+            bindToController(bindToController?: boolean): T; // default: false
+            resolve(resolve?: { [index: string]: () => angular.IPromise<any> }): T;
+            controllerAs(controllerAs?: string): T;
+            parent(parent?: string | Element | JQuery): T; // default: root node
+            onComplete(onComplete?: Function): T;
+            ariaLabel(ariaLabel: string): T;
+        }
 
-    interface IConfirmDialog extends IPresetDialog<IConfirmDialog> {
-        cancel(cancel: string): IConfirmDialog;
-    }
+        interface IAlertDialog extends IPresetDialog<IAlertDialog> {
+        }
 
-    interface IDialogOptions {
-        templateUrl?: string;
-        template?: string;
-        autoWrap?: boolean; // default: true
-        targetEvent?: MouseEvent;
-        openFrom?: any;
-        closeTo?: any;
-        scope?: angular.IScope; // default: new child scope
-        preserveScope?: boolean; // default: false
-        disableParentScroll?: boolean; // default: true
-        hasBackdrop?: boolean // default: true
-        clickOutsideToClose?: boolean; // default: false
-        escapeToClose?: boolean; // default: true
-        focusOnOpen?: boolean; // default: true
-        controller?: string|Function;
-        locals?: {[index: string]: any};
-        bindToController?: boolean; // default: false
-        resolve?: {[index: string]: angular.IPromise<any>}
-        controllerAs?: string;
-        parent?: string|Element|JQuery; // default: root node
-        onShowing?: Function;
-        onComplete?: Function;
-        onRemoving?: Function;
-        fullscreen?: boolean;
-    }
+        interface IConfirmDialog extends IPresetDialog<IConfirmDialog> {
+            cancel(cancel: string): IConfirmDialog;
+        }
 
-    interface IDialogService {
-        show(dialog: IDialogOptions|IAlertDialog|IConfirmDialog): angular.IPromise<any>;
-        confirm(): IConfirmDialog;
-        alert(): IAlertDialog;
-        hide(response?: any): angular.IPromise<any>;
-        cancel(response?: any): void;
-    }
+        interface IPromptDialog extends IPresetDialog<IPromptDialog> {
+            cancel(cancel: string): IPromptDialog;
+            placeholder(placeholder: string): IPromptDialog;
+            initialValue(initialValue: string): IPromptDialog;
+        }
 
-    interface IIcon {
-        (id: string): angular.IPromise<Element>; // id is a unique ID or URL
-    }
+        interface IColorExpression {
+            [cssPropertyName: string]: string;
+        }
 
-    interface IIconProvider {
-        icon(id: string, url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
-        iconSet(id: string, url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
-        defaultIconSet(url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
-        defaultViewBoxSize(viewBoxSize: number): IIconProvider; // default: 24
-        defaultFontSet(name: string): IIconProvider;
-    }
+        interface IColorService {
+            applyThemeColors(element: Element|JQuery, colorExpression: IColorExpression): void;
+            getThemeColor(expression: string): string;
+            hasTheme(): boolean;
+        }
 
-    interface IMedia {
-        (media: string): boolean;
-    }
+        interface IDialogOptions {
+            templateUrl?: string;
+            template?: string;
+            contentElement?: string | Element;
+            autoWrap?: boolean; // default: true
+            targetEvent?: MouseEvent;
+            openFrom?: any;
+            closeTo?: any;
+            scope?: angular.IScope; // default: new child scope
+            preserveScope?: boolean; // default: false
+            disableParentScroll?: boolean; // default: true
+            hasBackdrop?: boolean; // default: true
+            clickOutsideToClose?: boolean; // default: false
+            escapeToClose?: boolean; // default: true
+            focusOnOpen?: boolean; // default: true
+            controller?: string | Function;
+            locals?: { [index: string]: any };
+            bindToController?: boolean; // default: false
+            resolve?: { [index: string]: () => angular.IPromise<any> }
+            controllerAs?: string;
+            parent?: string | Element | JQuery; // default: root node
+            onShowing?: Function;
+            onComplete?: Function;
+            onRemoving?: Function;
+            skipHide?: boolean;
+            fullscreen?: boolean; // default: false
+        }
 
-    interface ISidenavObject {
-        toggle(): angular.IPromise<void>;
-        open(): angular.IPromise<void>;
-        close(): angular.IPromise<void>;
-        isOpen(): boolean;
-        isLockedOpen(): boolean;
-    }
+        interface IDialogService {
+            show(dialog: IDialogOptions | IAlertDialog | IConfirmDialog | IPromptDialog): angular.IPromise<any>;
+            confirm(): IConfirmDialog;
+            alert(): IAlertDialog;
+            prompt(): IPromptDialog;
+            hide(response?: any): angular.IPromise<any>;
+            cancel(response?: any): void;
+        }
 
-    interface ISidenavService {
-        (component: string): ISidenavObject;
-    }
+        interface IIcon {
+            (id: string): angular.IPromise<Element>; // id is a unique ID or URL
+        }
 
-    interface IToastPreset<T> {
-        textContent(content: string): T;
-        action(action: string): T;
-        highlightAction(highlightAction: boolean): T;
-        highlightClass(highlightClass: string): T;
-        capsule(capsule: boolean): T;
-        theme(theme: string): T;
-        hideDelay(delay: number): T;
-        position(position: string): T;
-        parent(parent?: string|Element|JQuery): T; // default: root node
-    }
+        interface IIconProvider {
+            icon(id: string, url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
+            iconSet(id: string, url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
+            defaultIconSet(url: string, viewBoxSize?: number): IIconProvider; // viewBoxSize default: 24
+            defaultViewBoxSize(viewBoxSize: number): IIconProvider; // default: 24
+            defaultFontSet(name: string): IIconProvider;
+        }
 
-    interface ISimpleToastPreset extends IToastPreset<ISimpleToastPreset> {
-    }
+        interface IMedia {
+            (media: string): boolean;
+        }
 
-    interface IToastOptions {
-        templateUrl?: string;
-        template?: string;
-        autoWrap?:boolean;
-        scope?: angular.IScope; // default: new child scope
-        preserveScope?: boolean; // default: false
-        hideDelay?: number; // default (ms): 3000
-        position?: string; // any combination of 'bottom'/'left'/'top'/'right'/'fit'; default: 'bottom left'
-        controller?: string|Function;
-        locals?: {[index: string]: any};
-        bindToController?: boolean; // default: false
-        resolve?: {[index: string]: angular.IPromise<any>}
-        controllerAs?: string;
-        parent?: string|Element|JQuery; // default: root node
-    }
+        interface ISidenavObject {
+            toggle(): angular.IPromise<void>;
+            open(): angular.IPromise<void>;
+            close(): angular.IPromise<void>;
+            isOpen(): boolean;
+            isLockedOpen(): boolean;
+            onClose(onClose: Function): void;
+        }
 
-    interface IToastService {
-        show(optionsOrPreset: IToastOptions|IToastPreset<any>): angular.IPromise<any>;
-        showSimple(content: string): angular.IPromise<any>;
-        simple(): ISimpleToastPreset;
-        build(): IToastPreset<any>;
-        updateContent(): void;
-        hide(response?: any): void;
-        cancel(response?: any): void;
-    }
+        interface ISidenavService {
+            (component: string, enableWait: boolean): angular.IPromise<ISidenavObject>;
+            (component: string): ISidenavObject;
+        }
 
-    interface IPalette {
-        0?: string;
-        50?: string;
-        100?: string;
-        200?: string;
-        300?: string;
-        400?: string;
-        500?: string;
-        600?: string;
-        700?: string;
-        800?: string;
-        900?: string;
-        A100?: string;
-        A200?: string;
-        A400?: string;
-        A700?: string;
-        contrastDefaultColor?: string;
-        contrastDarkColors?: string|string[];
-        contrastLightColors?: string|string[];
-    }
+        interface IToastPreset<T> {
+            textContent(content: string): T;
+            action(action: string): T;
+            highlightAction(highlightAction: boolean): T;
+            highlightClass(highlightClass: string): T;
+            capsule(capsule: boolean): T;
+            theme(theme: string): T;
+            hideDelay(delay: number): T;
+            position(position: string): T;
+            parent(parent?: string | Element | JQuery): T; // default: root node
+        toastClass(toastClass: string): T;
+        }
 
-    interface IThemeHues {
-        default?: string;
-        'hue-1'?: string;
-        'hue-2'?: string;
-        'hue-3'?: string;
-    }
+        interface ISimpleToastPreset extends IToastPreset<ISimpleToastPreset> {
+        }
 
-    interface IThemePalette {
-        name: string;
-        hues: IThemeHues;
-    }
+        interface IToastOptions {
+            templateUrl?: string;
+            template?: string;
+            autoWrap?: boolean;
+            scope?: angular.IScope; // default: new child scope
+            preserveScope?: boolean; // default: false
+            hideDelay?: number; // default (ms): 3000
+            position?: string; // any combination of 'bottom'/'left'/'top'/'right'/'fit'; default: 'bottom left'
+            toastClass?: string;
+            controller?: string | Function;
+            locals?: { [index: string]: any };
+            bindToController?: boolean; // default: false
+            resolve?: { [index: string]: () => angular.IPromise<any> }
+            controllerAs?: string;
+            parent?: string | Element | JQuery; // default: root node
+        }
 
-    interface IThemeColors {
-        accent: IThemePalette;
-        background: IThemePalette;
-        primary: IThemePalette;
-        warn: IThemePalette;
-    }
+        interface IToastService {
+            show(optionsOrPreset: IToastOptions | IToastPreset<any>): angular.IPromise<any>;
+            showSimple(content: string): angular.IPromise<any>;
+            simple(): ISimpleToastPreset;
+            build(): IToastPreset<any>;
+            updateContent(newContent: string): void;
+            updateTextContent(newContent: string): void;
+            hide(response?: any): void;
+            cancel(response?: any): void;
+        }
 
-    interface IThemeGrayScalePalette {
-        1: string;
-        2: string;
-        3: string;
-        4: string;
-        name: string;
-    }
+        interface IPalette {
+            0?: string;
+            50?: string;
+            100?: string;
+            200?: string;
+            300?: string;
+            400?: string;
+            500?: string;
+            600?: string;
+            700?: string;
+            800?: string;
+            900?: string;
+            A100?: string;
+            A200?: string;
+            A400?: string;
+            A700?: string;
+            contrastDefaultColor?: string;
+            contrastDarkColors?: string | string[];
+            contrastLightColors?: string | string[];
+        }
 
-    interface ITheme {
-        name: string;
-        isDark: boolean;
-        colors: IThemeColors;
-        foregroundPalette: IThemeGrayScalePalette;
-        foregroundShadow: string;
-        accentPalette(name: string, hues?: IThemeHues): ITheme;
-        primaryPalette(name: string, hues?: IThemeHues): ITheme;
-        warnPalette(name: string, hues?: IThemeHues): ITheme;
-        backgroundPalette(name: string, hues?: IThemeHues): ITheme;
-        dark(isDark?: boolean): ITheme;
-    }
+        interface IThemeHues {
+            default?: string;
+            'hue-1'?: string;
+            'hue-2'?: string;
+            'hue-3'?: string;
+        }
 
-    interface IThemingProvider {
-        theme(name: string, inheritFrom?: string): ITheme;
-        definePalette(name: string, palette: IPalette): IThemingProvider;
-        extendPalette(name: string, palette: IPalette): IPalette;
-        setDefaultTheme(theme: string): void;
-        alwaysWatchTheme(alwaysWatch: boolean): void;
-    }
+        interface IThemePalette {
+            name: string;
+            hues: IThemeHues;
+        }
 
-    interface IDateLocaleProvider {
-        months: string[];
-        shortMonths: string[];
-        days: string[];
-        shortDays: string[];
-        dates: string[];
-        firstDayOfWeek: number;
-        parseDate(dateString: string): Date;
-        formatDate(date: Date): string;
-        monthHeaderFormatter(date: Date): string;
-        weekNumberFormatter(weekNumber: number): string;
-        msgCalendar: string;
-        msgOpenCalendar: string;
-    }
+        interface IBrowserColors{
+            theme: string;
+            palette: string;
+            hue: string;
+        }
 
-    interface IMenuService {
-        hide(response?: any, options?: any): angular.IPromise<any>;
-    }
+        interface IThemeColors {
+            accent: IThemePalette;
+            background: IThemePalette;
+            primary: IThemePalette;
+            warn: IThemePalette;
+        }
 
-    interface IColorPalette {
-        red: IPalette;
-        pink: IPalette;
-        'deep-purple': IPalette;
-        indigo: IPalette;
-        blue: IPalette;
-        'light-blue': IPalette;
-        cyan: IPalette;
-        teal: IPalette;
-        green: IPalette;
-        'light-green': IPalette;
-        lime: IPalette;
-        yellow: IPalette;
-        amber: IPalette;
-        orange: IPalette;
-        'deep-orange': IPalette;
-        brown: IPalette;
-        grey: IPalette;
-        'blue-grey': IPalette;
+        interface IThemeGrayScalePalette {
+            1: string;
+            2: string;
+            3: string;
+            4: string;
+            name: string;
+        }
+
+        interface ITheme {
+            name: string;
+            isDark: boolean;
+            colors: IThemeColors;
+            foregroundPalette: IThemeGrayScalePalette;
+            foregroundShadow: string;
+            accentPalette(name: string, hues?: IThemeHues): ITheme;
+            primaryPalette(name: string, hues?: IThemeHues): ITheme;
+            warnPalette(name: string, hues?: IThemeHues): ITheme;
+            backgroundPalette(name: string, hues?: IThemeHues): ITheme;
+            dark(isDark?: boolean): ITheme;
+        }
+
+        interface IThemingProvider {
+            alwaysWatchTheme(alwaysWatch: boolean): void;
+            definePalette(name: string, palette: IPalette): IThemingProvider;
+            enableBrowserColor(browserColors: IBrowserColors): Function;
+            extendPalette(name: string, palette: IPalette): IPalette;
+            setDefaultTheme(theme: string): void;
+            setNonce(nonce: string): void;
+            theme(name: string, inheritFrom?: string): ITheme;
+        }
+
+        interface IDateLocaleProvider {
+            months: string[];
+            shortMonths: string[];
+            days: string[];
+            shortDays: string[];
+            dates: string[];
+            firstDayOfWeek: number;
+            parseDate(dateString: string): Date;
+            formatDate(date: Date): string;
+            monthHeaderFormatter(date: Date): string;
+            weekNumberFormatter(weekNumber: number): string;
+            msgCalendar: string;
+            msgOpenCalendar: string;
+        }
+
+        interface IMenuService {
+            hide(response?: any, options?: any): angular.IPromise<any>;
+        }
+
+        interface IColorPalette {
+            red: IPalette;
+            pink: IPalette;
+            'deep-purple': IPalette;
+            indigo: IPalette;
+            blue: IPalette;
+            'light-blue': IPalette;
+            cyan: IPalette;
+            teal: IPalette;
+            green: IPalette;
+            'light-green': IPalette;
+            lime: IPalette;
+            yellow: IPalette;
+            amber: IPalette;
+            orange: IPalette;
+            'deep-orange': IPalette;
+            brown: IPalette;
+            grey: IPalette;
+            'blue-grey': IPalette;
+        }
+
+        interface IPanelConfig {
+            id?: string;
+            template?: string;
+            templateUrl?: string;
+            controller?: string | Function;
+            controllerAs?: string;
+            bindToController?: boolean; // default: true
+            locals?: { [index: string]: any };
+            resolve?: { [index: string]: () => angular.IPromise<any> }
+            attachTo?: string | JQuery | Element;
+            propagateContainerEvents?: boolean;
+            panelClass?: string;
+            zIndex?: number; // default: 80
+            position?: IPanelPosition;
+            clickOutsideToClose?: boolean; // default: false
+            escapeToClose?: boolean; // default: false
+            trapFocus?: boolean; // default: false
+            focusOnOpen?: boolean; // default: true
+            fullscreen?: boolean; // default: false
+            animation?: IPanelAnimation;
+            hasBackdrop?: boolean; // default: false
+            disableParentScroll?: boolean; // default: false
+            onDomAdded?: Function;
+            onOpenComplete?: Function;
+            onRemoving?: Function;
+            onDomRemoved?: Function;
+            origin?: string | JQuery | Element;
+        }
+
+        interface IPanelRef {
+            id: string;
+            config: IPanelConfig;
+            isAttached: boolean;
+            open(): angular.IPromise<any>;
+            close(): angular.IPromise<any>;
+            attach(): angular.IPromise<any>;
+            detach(): angular.IPromise<any>;
+            show(): angular.IPromise<any>;
+            hide(): angular.IPromise<any>;
+            destroy(): void;
+            addClass(newClass: string): void;
+            removeClass(oldClass: string): void;
+            toggleClass(toggleClass: string): void;
+            updatePosition(position: IPanelPosition): void;
+            registerInterceptor(type: string, callback: () => angular.IPromise<any>): IPanelRef;
+            removeInterceptor(type: string, callback: () => angular.IPromise<any>): IPanelRef;
+            removeAllInterceptors(type?: string): IPanelRef;
+        }
+
+        interface IPanelPosition {
+            absolute(): IPanelPosition;
+            relativeTo(someElement: string | JQuery | Element): IPanelPosition;
+            top(top?: string): IPanelPosition; // default: '0'
+            bottom(bottom?: string): IPanelPosition; // default: '0'
+            start(start?: string): IPanelPosition; // default: '0'
+            end(end?: string): IPanelPosition; // default: '0'
+            left(left?: string): IPanelPosition; // default: '0'
+            right(right?: string): IPanelPosition; // default: '0'
+            centerHorizontally(): IPanelPosition;
+            centerVertically(): IPanelPosition;
+            center(): IPanelPosition;
+            addPanelPosition(xPosition: string, yPosition: string): IPanelPosition;
+            withOffsetX(offsetX: string | ((panel: IPanelPosition) => string)): IPanelPosition;
+            withOffsetY(offsetY: string | ((panel: IPanelPosition) => string)): IPanelPosition;
+        }
+
+        interface IPanelAnimation {
+            openFrom(from: string | Element | Event | { top: number, left: number }): IPanelAnimation;
+            closeTo(to: string | Element | { top: number, left: number }): IPanelAnimation;
+            withAnimation(cssClass: string | { open: string, close: string }): IPanelAnimation;
+        }
+
+        interface IPanelService {
+            create(opt_config: IPanelConfig): IPanelRef;
+            open(opt_config: IPanelConfig): angular.IPromise<IPanelRef>;
+            newPanelPosition(): IPanelPosition;
+            newPanelAnimation(): IPanelAnimation;
+            xPosition: {
+                CENTER: string,
+                ALIGN_START: string,
+                ALIGN_END: string,
+                OFFSET_START: string,
+                OFFSET_END: string,
+            };
+            yPosition: {
+                CENTER: string,
+                ALIGN_TOPS: string,
+                ALIGN_BOTTOMS: string,
+                ABOVE: string,
+                BELOW: string,
+            };
+            animation: {
+                SLIDE: string,
+                SCALE: string,
+                FADE: string,
+            };
+            interceptorTypes: {
+                CLOSE: string,
+            };
+        }
     }
 }

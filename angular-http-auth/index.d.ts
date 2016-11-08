@@ -3,17 +3,21 @@
 // Definitions by: vvakame <https://github.com/vvakame>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-/// <reference types="angularjs" />
+/// <reference types="angular" />
 
-declare namespace angular.httpAuth {
-    interface IAuthService {
-        loginConfirmed(data?:any, configUpdater?:Function):void;
-        loginCancelled(data?:any, reason?:any):void;
-    }
+import * as ng from 'angular';
 
-    interface IHttpBuffer {
-        append(config:ng.IRequestConfig, deferred:{resolve(data:any):void; reject(data:any):void;}):void;
-        rejectAll(reason?:any):void;
-        retryAll(updater?:Function):void;
-    }
+declare module 'angular' {
+	export namespace httpAuth {
+		interface IAuthService {
+			loginConfirmed(data?: any, configUpdater?: Function): void;
+			loginCancelled(data?: any, reason?: any): void;
+		}
+
+		interface IHttpBuffer {
+			append(config: ng.IRequestConfig, deferred: { resolve(data: any): void; reject(data: any): void; }): void;
+			rejectAll(reason?: any): void;
+			retryAll(updater?: Function): void;
+		}
+	}
 }

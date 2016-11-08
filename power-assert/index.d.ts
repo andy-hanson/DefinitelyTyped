@@ -1,4 +1,4 @@
-// Type definitions for power-assert
+// Type definitions for power-assert 1.4.1
 // Project: https://github.com/twada/power-assert
 // Definitions by: vvakame <https://github.com/vvakame>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -7,6 +7,8 @@
 
 /// <reference types="empower" />
 /// <reference types="power-assert-formatter" />
+
+import * as empower from "empower";
 
 export = assert;
 export as namespace assert;
