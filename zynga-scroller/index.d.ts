@@ -47,4 +47,4 @@ declare class Scroller {
   }, timeStamp: number, scale?: number): void;
   doTouchMove(touches: [any], timeStamp: number): void;
   doTouchEnd(timeStamp: number): void;
-}CHANGE SOMETHIN
+}
