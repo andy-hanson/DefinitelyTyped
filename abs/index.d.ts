@@ -11,3 +11,5 @@
 declare function Abs(input: string): string;
 
 export default Abs;
+
+export function foo(): void;
