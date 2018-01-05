@@ -2,7 +2,7 @@
 // Project: https://www.ably.io/
 // Definitions by: Ably <https://github.com/ably>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
+//ddd
 export namespace ablyLib {
   namespace ChannelState {
     type INITIALIZED = 'initialized';
