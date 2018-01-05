@@ -2,7 +2,7 @@
 // Project: https://github.com/isaacs/abbrev-js#readme
 // Definitions by: BendingBender <https://github.com/BendingBender>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
+//comment
 export = abbrev;
 
 declare function abbrev(words: string[]): {[abbreviation: string]: string};
